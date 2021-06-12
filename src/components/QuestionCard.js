@@ -95,10 +95,7 @@ export class QuestionCard extends Component {
   }
 }
 
-function mapStateToProps(
-  { users, questions, authedUser },
-  { match, id }
-) {
+const mapStateToProps = ({ users, questions, authedUser }, { match, id }) => {
  
   let question,
     author,

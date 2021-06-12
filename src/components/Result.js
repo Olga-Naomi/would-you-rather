@@ -101,7 +101,7 @@ export class Result extends Component {
   }
 }
 
-function mapStateToProps({ users, authedUser }) {
+const mapStateToProps = ({ users, authedUser }) => {
   const user = users[authedUser.id];
   return {
     user
