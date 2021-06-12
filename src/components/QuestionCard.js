@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import { Segment, Header, Grid, Image } from 'semantic-ui-react';
+import { Segment, Header, Grid, Image, Label } from 'semantic-ui-react';
 import Question from './Question';
 import Result from './Result';
 import Overview from './Overview';
 
 
-const pollTypes = {
-  POLL_TEASER: 'POLL_TEASER',
-  POLL_QUESTION: 'POLL_QUESTION',
-  POLL_RESULT: 'POLL_RESULT'
+const views = {
+  OVERVIEW: 'OVERVIEW',
+  QUESTION: 'QUESTION',
+  RESULT: 'RESULT'
 };
 
 const QuestionContent = props => {
-  const { pollType, question, unanswered } = props;
+  const { view, question, unanswered } = props;
 
-  switch (pollType) {
-    case pollTypes.POLL_TEASER:
+  switch (view) {
+    case views.OVERVIEW:
       return <Overview question={question} unanswered={unanswered} />;
-    case pollTypes.POLL_QUESTION:
+    case views.QUESTION:
       return <Question question={question} />;
-    case pollTypes.POLL_RESULT:
+    case views.RESULT:
       return <Result question={question} />;
     default:
       return;
@@ -34,7 +34,7 @@ export class QuestionCard extends Component {
     const {
       author,
       question,
-      pollType,
+      view,
       badUrl,
       unanswered = null
     } = this.props;
@@ -58,7 +58,8 @@ export class QuestionCard extends Component {
       }
     };
 
-    const tabColor = unanswered === true ? colors.green : colors.blue;
+    const tabColor = unanswered === true ? colors.green : colors.blue
+    const labelColor = unanswered === true ? 'green' : 'blue'
     const borderTop =
       unanswered === null
         ? `1px solid ${colors.grey}`
@@ -73,20 +74,29 @@ export class QuestionCard extends Component {
           attached="top"
           style={{ borderTop: borderTop }}
         >
-          {author.name} asks:
+          <span>{author.name} asks:</span>
         </Header>
-
         <Grid divided padded>
           <Grid.Row>
             <Grid.Column width={5}>
               <Image src={author.avatarURL} />
             </Grid.Column>
-            <Grid.Column width={11}>
+            <Grid.Column width={6}>
               <QuestionContent
-                pollType={pollType}
+                view={view}
                 question={question}
                 unanswered={unanswered}
               />
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <Segment.Group>
+                <Header as="h5" block attached="top" content="Votes" />
+                <Segment>
+                  <Label circular color={labelColor} size="big">
+                    {question.optionOne.votes.length + question.optionTwo.votes.length}
+                  </Label>
+                </Segment>
+              </Segment.Group>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -96,10 +106,10 @@ export class QuestionCard extends Component {
 }
 
 const mapStateToProps = ({ users, questions, authedUser }, { match, id }) => {
- 
+
   let question,
     author,
-    pollType,
+    view,
     badUrl = false;
 
   if (id === undefined) {
@@ -112,22 +122,22 @@ const mapStateToProps = ({ users, questions, authedUser }, { match, id }) => {
       badUrl = true;
     } else {
       author = users[question.author];
-      pollType = pollTypes.POLL_QUESTION;
+      view = views.QUESTION;
       if (Object.keys(user.answers).includes(question.id)) {
-        pollType = pollTypes.POLL_RESULT;
+        view = views.RESULT;
       }
     }
   } else {
     question = questions[id];
     author = users[question.author];
-    pollType = pollTypes.POLL_TEASER;
+    view = views.OVERVIEW;
   }
 
   return {
     badUrl,
     question,
     author,
-    pollType
+    view
   };
 }
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Header, Button, Form, Radio, Container, Segment } from 'semantic-ui-react';
 import { handleSaveQuestionAnswer } from '../actions/users';
+import '../questions.css'
 
 export class Question extends Component {
 
@@ -34,23 +35,32 @@ export class Question extends Component {
         <Segment>
           <Header as="h4">Would you rather</Header>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Field>
-              <Radio
-                label={question.optionOne.text}
-                name="radioGroup"
-                value="optionOne"
-                checked={this.state.value === 'optionOne'}
-                onChange={this.handleChange}
-              />
-              <br />
-              <Radio
-                label={question.optionTwo.text}
-                name="radioGroup"
-                value="optionTwo"
-                checked={this.state.value === 'optionTwo'}
-                onChange={this.handleChange}
-              />
-            </Form.Field>
+            <Form.Group grouped>
+              <label>
+                <Form.Field>
+                  <Radio
+                    label={question.optionOne.text}
+                    name="radioGroup"
+                    value="optionOne"
+                    checked={this.state.value === 'optionOne'}
+                    onChange={this.handleChange}
+                    className='card-input-element'
+                  />
+                  <br />
+                  or
+                  <br />
+                  <Radio
+                    label={question.optionTwo.text}
+                    name="radioGroup"
+                    value="optionTwo"
+                    checked={this.state.value === 'optionTwo'}
+                    onChange={this.handleChange}
+                    className='card-input-element'
+                  />
+                </Form.Field>
+              </label>
+
+            </Form.Group>
             <Form.Field>
               <Button
                 color="green"
@@ -72,7 +82,7 @@ export class Question extends Component {
   }
 }
 
-const mapStateToProps = ({ authedUser })=>  {return {authedUser}}
+const mapStateToProps = ({ authedUser }) => { return { authedUser } }
 
 
 export default withRouter(connect(
