@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAuthedUser } from '../actions/authedUser'
 import { Redirect } from "react-router-dom";
+import { Container, Segment } from "semantic-ui-react";
 
 class Login extends Component {
 
     state = {
         username: '',
+        disabled: true,
         toHome: false
     }
 
@@ -15,7 +17,7 @@ class Login extends Component {
         const username = this.state.username
         const { dispatch, users } = this.props
 
-  
+
 
         dispatch(setAuthedUser(users[username]))
         this.setState(() => ({
@@ -26,38 +28,53 @@ class Login extends Component {
     handleSelection = (e) => {
         const username = e.target.value
 
-        this.setState(() => ({
-            username
-        }))
+        console.log(username)
+        if (username !== '') {
+            this.setState(() => ({
+                username,
+                disabled : false
+            }))
+        }else{
+            this.setState(() => ({
+                disabled : true
+            }))
+            alert('No user name selected!')
+        }
 
 
     }
 
     render() {
         const { users } = this.props
-        const { username, toHome } = this.state
+        const { toHome, disabled } = this.state
+
 
         if (toHome === true) {
             return <Redirect to='/home' />
         }
         return (
-            <div>
-                <h3>Login</h3>
-                <form onSubmit={this.handleSubmit}>
-                    <label>Username</label>
-                    <select
-                        onChange={this.handleSelection}>
-                        <option>Select User</option>
-                        {
-                            Object.entries(users).map(([key, value]) => (
-                                <option key={value.id} value={value.id}>{value.name}</option>
-                            ))
-                        }
-                    </select>
-                    <button className='btn' type='submit' disabled={username === ''}>Submit</button>
+            <Container>
+                <Segment>
+                    <h3>Login</h3>
 
-                </form>
-            </div>
+                    <form onSubmit={this.handleSubmit}>
+                        <label>Username</label>
+                        <select
+                            onChange={this.handleSelection}>
+                            <option value=''>Select User</option>
+                            {
+                                Object.entries(users).map(([key, value]) => (
+                                    <option key={value.id} value={value.id}>{value.name}</option>
+                                ))
+                            }
+                        </select>
+                        <button className='btn' type='submit' disabled={disabled}>Submit</button>
+
+                    </form>
+                </Segment>
+
+            </Container>
+
         )
     }
 }

@@ -1,20 +1,20 @@
 import React from 'react'
 import { Component } from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { Menu } from "semantic-ui-react";
 import { connect } from "react-redux";
 import '../navbar.css'
 import { setAuthedUser } from '../actions/authedUser'
+import { showLoading, hideLoading } from "react-redux-loading";
 
 class Nav extends Component {
 
   handlelogout = e => {
-    //e.preventDefault()
-    console.log(this.props)
+  
     const { dispatch } = this.props
-
-    dispatch(setAuthedUser(null)).then(()=>{
-      useHistory.push(`/home`)
-    })
+    dispatch(showLoading())
+    dispatch(setAuthedUser(null))
+    dispatch(hideLoading())
 
   }
 
@@ -27,7 +27,7 @@ class Nav extends Component {
     const { authedUser } = this.props
     return (
       <nav className='nav'>
-        <ul>
+        <ul id='nav-list'>
           <li>
             <NavLink to='/home' activeClassName='active'>
               Home
@@ -39,14 +39,17 @@ class Nav extends Component {
             </NavLink>
           </li>
           <li>
-            <NavLink to='/new' activeClassName='active'>
+            <NavLink to='/add' activeClassName='active'>
               New Poll
             </NavLink>
           </li>
           <li style={liStyle} className="dropdown">
             <NavLink to='#'> {authedUser.name}</NavLink>
             <div className="dropdown-content">
-              <NavLink onClick={() => this.handlelogout} to='/' exact activeClassName='active'>Logout</NavLink>
+              <Menu.Item
+                name='logout'
+                onClick={this.handlelogout}
+              />
             </div>
           </li>
         </ul>

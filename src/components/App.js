@@ -6,10 +6,12 @@ import { connect } from "react-redux";
 import { initialisation } from "../actions/shared";
 import Login from './Login'
 import Home from './Home'
-import NewPoll from './NewPoll'
+import NewQuestion from './NewQuestion'
 import BadUrl from './BadUrl'
 import Nav from './Nav'
+import Leaderboard from './Leaderboard'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import QuestionCard from './QuestionCard';
 
 
 class App extends Component {
@@ -31,7 +33,7 @@ class App extends Component {
             </header>
             {
               authedUser === null ? (
-                <Route
+                <Route path='/'
                   render={() => (
                     <Login />
                   )}
@@ -45,7 +47,10 @@ class App extends Component {
                   <Switch>
                     <Route path='/' exact component={Login} />
                     <Route path='/home' exact component={Home} />
-                    <Route path='/new' exact component={NewPoll} />
+                    <Route path='/add' exact component={NewQuestion} />
+                    <Route path='/leaderboard' exact component={Leaderboard}/>
+                    <Route path='/questions/wrong_id' exact component={BadUrl}/>
+                    <Route path='/questions/:id' exact component={QuestionCard}/>
                     <Route component={BadUrl} />
                   </Switch>
                 </Fragment>

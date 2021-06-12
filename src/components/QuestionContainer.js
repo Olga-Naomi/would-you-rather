@@ -1,40 +1,52 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { Tab } from 'semantic-ui-react'
+import QuestionCard from './QuestionCard'
+
 
 
 class QuestionContainer extends Component {
-    
-    render() {
 
-        console.log(this.props)
+    render() {
         const { questionData } = this.props
 
-        return (
-            <div>
-                {questionData.answered}
-                {questionData.unanswered}
-            </div>
-        )
+
+        return  <Tab panes={panes({ questionData })} className="tab" />
+
     }
 }
 
-function mapStateToProps({ authedUser, users, questions }) {
-    console.log('questions', questions)
-    const answeredIds = Object.keys(users[authedUser.id].answers);
-    const answered = Object.values(questions)
-        .filter(question => !answeredIds.includes(question.id))
-        .sort((a, b) => b.timestamp - a.timestamp);
-    const unanswered = Object.values(questions)
-        .filter(question => answeredIds.includes(question.id))
-        .sort((a, b) => b.timestamp - a.timestamp);
+const panes = data => {
+    const { questionData } = data;
+    return [
+        {
+            menuItem: 'Unanswered',
+            render: () => (
+                <Tab.Pane>
+                    {questionData.answered.map(question => (
+                        <QuestionCard
+                            key={question.id}
+                            id={question.id}
+                            unanswered={true}
+                        />
+                    ))}
+                </Tab.Pane>
+            )
+        },
+        {
+            menuItem: 'Answered',
+            render: () => (
+                <Tab.Pane>
+                    {questionData.unanswered.map(question => (
+                        <QuestionCard
+                            key={question.id}
+                            id={question.id}
+                            unanswered={false}
+                        />
+                    ))}
+                </Tab.Pane>
+            )
+        }
+    ];
+};
 
-   
-  return {
-    questionData: {
-      answered,
-      unanswered
-    }
-  };
-}
-
-export default connect(mapStateToProps)(QuestionContainer)
+export default QuestionContainer

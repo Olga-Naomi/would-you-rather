@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import { Container } from 'semantic-ui-react'
 import QuestionContainer from './QuestionContainer'
 
 
@@ -7,16 +8,18 @@ import QuestionContainer from './QuestionContainer'
 
 class Home extends Component {
     render() {
+        const { questionData } = this.props
         return (
-            <div>
-               <QuestionContainer />
-            </div>
+
+            <Container>
+                <QuestionContainer questionData={questionData} />
+            </Container>
+
         )
     }
 }
 
 function mapStateToProps({ authedUser, users, questions }) {
-    console.log('questions', questions)
     const answeredIds = Object.keys(users[authedUser.id].answers);
     const answered = Object.values(questions)
         .filter(question => !answeredIds.includes(question.id))
@@ -25,13 +28,13 @@ function mapStateToProps({ authedUser, users, questions }) {
         .filter(question => answeredIds.includes(question.id))
         .sort((a, b) => b.timestamp - a.timestamp);
 
-   
-  return {
-    questionData: {
-      answered,
-      unanswered
-    }
-  };
+
+    return {
+        questionData: {
+            answered,
+            unanswered
+        }
+    };
 }
 
 

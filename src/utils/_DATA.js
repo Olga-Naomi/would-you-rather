@@ -2,7 +2,7 @@ let users = {
     sarahedo: {
         id: 'sarahedo',
         name: 'Sarah Edo',
-        avatarURL: 'https://i.pravatar.cc/300',
+        avatarURL: 'https://robohash.org/bb588e8706216d18144cc686cda51e3a?set=set4&bgset=&size=400x400',
         answers: {
             "8xf0y6ziyjabvozdd253nd": 'optionOne',
             "6ni6ok3ym7mf1p33lnez": 'optionTwo',
@@ -14,7 +14,7 @@ let users = {
     tylermcginnis: {
         id: 'tylermcginnis',
         name: 'Tyler McGinnis',
-        avatarURL: 'https://i.pravatar.cc/300',
+        avatarURL: 'https://gravatar.com/avatar/9ce595b0f60634e92d4d8490f3b93a2e?s=400&d=robohash&r=x',
         answers: {
             "vthrdm985a262al8qx3do": 'optionOne',
             "xj352vofupe1dqz9emx13r": 'optionTwo',
@@ -24,7 +24,7 @@ let users = {
     johndoe: {
         id: 'johndoe',
         name: 'John Doe',
-        avatarURL: 'https://i.pravatar.cc/300',
+        avatarURL: 'https://robohash.org/ef6afb2cd4a2c0d8a435f94a38e078a6?set=set4&bgset=&size=400x400',
         answers: {
             "xj352vofupe1dqz9emx13r": 'optionOne',
             "vthrdm985a262al8qx3do": 'optionTwo',
